@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_app/constants/my_theme_data.dart';
-import 'package:movie_app/screens/movie_details.dart';
 import 'package:movie_app/screens/movies_screen.dart';
 import 'package:movie_app/screens/splash_screen.dart';
+import 'package:movie_app/service/init_getit.dart';
+import 'package:movie_app/service/navigation_service.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  setupLocator();
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((
+    _,
+  ) async {
+    await dotenv.load(fileName: "assets/.env");
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -13,9 +23,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: getIt<NavigationService>().navigatorKey,
       title: 'Movies App',
       theme: MyThemeData.lightTheme,
-      home: SplashScreen(),
+      home: MoviesScreen(),
     );
   }
 }
