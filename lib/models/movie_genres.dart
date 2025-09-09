@@ -8,8 +8,8 @@ class MovieGenres {
     return MovieGenres(id: json['id'], name: json['name']);
   }
 
-  @override
-  String toString() {
-    return "MovieGenres(id: $id, name: $name)";
-  }
+  // @override
+  // String toString() {
+  //   return "MovieGenres(id: $id, name: $name)";
+  // }
 }

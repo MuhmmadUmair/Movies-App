@@ -9,12 +9,11 @@ import 'package:movie_app/models/movies_model.dart';
 class ApiService {
   Future<List<MoviesModel>> fetchMovies({int page = 1}) async {
     final url = Uri.parse(
-      "${ApiConstants.baseUrl}/movie/popular?language=en-US&page=1'",
+      "${ApiConstants.baseUrl}/movie/popular?language=en-US&page=$page'",
     );
     final response = await http.get(url, headers: ApiConstants.headers);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      log("data $data");
       return List.from(
         data['results'].map((index) => MoviesModel.fromJson(index)),
       );
@@ -30,7 +29,6 @@ class ApiService {
     final response = await http.get(url, headers: ApiConstants.headers);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      log("data $data");
       return List.from(
         data['genres'].map((index) => MoviesModel.fromJson(index)),
       );

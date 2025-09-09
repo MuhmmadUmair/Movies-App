@@ -14,10 +14,17 @@ class NavigationService {
   }
 
   navigationReplace(Widget widget) {
-    return navigatorKey.currentState?.push(
+    return navigatorKey.currentState?.pushReplacement(
       MaterialPageRoute(builder: (context) => widget),
     );
   }
 
-  // Future<void> show
+  void showSnakbar(String message) {
+    final context = navigatorKey.currentContext!;
+    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+    final snackbarWidget = SnackBar(
+      content: Text(message, style: TextStyle(color: Colors.white)),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackbarWidget);
+  }
 }

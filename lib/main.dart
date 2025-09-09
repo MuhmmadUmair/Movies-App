@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_app/constants/my_theme_data.dart';
 import 'package:movie_app/screens/movies_screen.dart';
-import 'package:movie_app/screens/splash_screen.dart';
 import 'package:movie_app/service/init_getit.dart';
 import 'package:movie_app/service/navigation_service.dart';
 
