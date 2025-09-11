@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:http/http.dart' as http;
 import 'package:movie_app/constants/api_constants.dart';
 import 'package:movie_app/models/movie_genres.dart';
@@ -9,9 +8,11 @@ import 'package:movie_app/models/movies_model.dart';
 class ApiService {
   Future<List<MoviesModel>> fetchMovies({int page = 1}) async {
     final url = Uri.parse(
-      "${ApiConstants.baseUrl}/movie/popular?language=en-US&page=$page'",
+      "${ApiConstants.baseUrl}/movie/popular?language=en-US&page=$page",
     );
-    final response = await http.get(url, headers: ApiConstants.headers);
+    final response = await http
+        .get(url, headers: ApiConstants.headers)
+        .timeout(Duration(seconds: 10));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return List.from(
@@ -24,13 +25,15 @@ class ApiService {
 
   Future<List<MovieGenres>> movieGenres() async {
     final url = Uri.parse(
-      "${ApiConstants.baseUrl}/genre/movie/list?language=en'",
+      "${ApiConstants.baseUrl}/genre/movie/list?language=en",
     );
-    final response = await http.get(url, headers: ApiConstants.headers);
+    final response = await http
+        .get(url, headers: ApiConstants.headers)
+        .timeout(Duration(seconds: 10));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return List.from(
-        data['genres'].map((index) => MoviesModel.fromJson(index)),
+        data['genres'].map((index) => MovieGenres.formJson(index)),
       );
     } else {
       throw Exception("Failed to load movies ${response.statusCode}");

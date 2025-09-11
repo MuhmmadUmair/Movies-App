@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/constants/my_app_constants.dart';
 import 'package:movie_app/constants/my_app_icons.dart';
 import 'package:movie_app/models/movies_model.dart';
 import 'package:movie_app/widgets/movies/favourite_btn.dart';
@@ -24,6 +23,7 @@ class MovieDetails extends StatelessWidget {
                   height: size.height * 0.65,
                   width: double.infinity,
                   child: CachedNetworkImage(
+                    // ignore: unnecessary_null_comparison
                     imageUrl: moviesModel.posterPath != null
                         ? 'https://image.tmdb.org/t/p/w500${moviesModel.posterPath}'
                         : 'https://via.placeholder.com/500x750?text=No+Image',
@@ -64,13 +64,15 @@ class MovieDetails extends StatelessWidget {
                                       size: 20,
                                     ),
                                     SizedBox(width: 5),
-                                    Text('${moviesModel.voteAverage}/10'),
+                                    Text(
+                                      '${moviesModel.voteAverage.toStringAsFixed(1)}/10',
+                                    ),
                                     Spacer(),
                                     Text(moviesModel.releaseDate),
                                   ],
                                 ),
                                 SizedBox(height: 10),
-                                GenersListWidget(),
+                                GenersListWidget(moviesModel: moviesModel),
                                 SizedBox(height: 15),
                                 Text(
                                   moviesModel.overview,
@@ -91,7 +93,7 @@ class MovieDetails extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: FavouriteBtn(),
+                            child: FavouriteBtn(moviesModel: moviesModel),
                           ),
                         ),
                       ),

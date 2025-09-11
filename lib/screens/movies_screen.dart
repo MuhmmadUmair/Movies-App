@@ -6,6 +6,7 @@ import 'package:movie_app/screens/favourites_screen.dart';
 import 'package:movie_app/service/init_getit.dart';
 import 'package:movie_app/service/navigation_service.dart';
 import 'package:movie_app/widgets/movies/movies_widget.dart';
+import 'package:movie_app/widgets/movies/my_error_widget.dart';
 
 class MoviesScreen extends StatefulWidget {
   const MoviesScreen({super.key});
@@ -18,6 +19,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
   final List<MoviesModel> _movies = [];
   int _currentPage = 1;
   bool _isFetching = false;
+  String? _errorMessage; // <-- track error
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -39,6 +41,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
     if (_isFetching) return;
     setState(() {
       _isFetching = true;
+      _errorMessage = null; // reset error before fetch
     });
     try {
       final List<MoviesModel> movies = await getIt<MoviesRepository>()
@@ -48,7 +51,10 @@ class _MoviesScreenState extends State<MoviesScreen> {
         _currentPage++;
       });
     } catch (error) {
-      getIt<NavigationService>().showSnakbar('An error occured $error');
+      setState(() {
+        _errorMessage = "An error occurred: $error"; // store error
+      });
+      getIt<NavigationService>().showSnakbar('An error occurred $error');
     } finally {
       setState(() {
         _isFetching = false;
@@ -58,15 +64,15 @@ class _MoviesScreenState extends State<MoviesScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Popular Movies'),
+        title: const Text('Popular Movies'),
         actions: [
           IconButton(
             onPressed: () {
@@ -74,31 +80,22 @@ class _MoviesScreenState extends State<MoviesScreen> {
             },
             icon: Icon(MyAppIcons.favouriteRounded, color: Colors.red),
           ),
-          IconButton(
-            onPressed: () async {
-              // final List<MoviesModel> movies = await getIt<ApiService>()
-              //     .fetchMovies();
-              // log("movies $movies");
-              // final List<MovieGenres> genres = await getIt<MoviesRepository>()
-              //     .movieGenres();
-              // await getIt<ApiService>().movieGenres();
-              // log("genres $genres");
-            },
-            icon: Icon(MyAppIcons.dark),
-          ),
+          IconButton(onPressed: () {}, icon: Icon(MyAppIcons.dark)),
         ],
       ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: _movies.length + (_isFetching ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index < _movies.length) {
-            return MoviesWidget(moviesModel: _movies[index]);
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
+      body: _errorMessage != null
+          ? MyErrorWidget(errorText: _errorMessage!, retryFuction: _fetchMovies)
+          : ListView.builder(
+              controller: _scrollController,
+              itemCount: _movies.length + (_isFetching ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index < _movies.length) {
+                  return MoviesWidget(moviesModel: _movies[index]);
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
     );
   }
 }

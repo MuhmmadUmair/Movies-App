@@ -60,11 +60,13 @@ class MoviesWidget extends StatelessWidget {
                         children: [
                           Icon(MyAppIcons.star, color: Colors.amber, size: 20),
                           SizedBox(width: 5),
-                          Text('${moviesModel.voteAverage}/10'),
+                          Text(
+                            '${moviesModel.voteAverage.toStringAsFixed(1)}/10',
+                          ),
                         ],
                       ),
                       SizedBox(height: 10),
-                      GenersListWidget(),
+                      GenersListWidget(moviesModel: moviesModel),
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -79,7 +81,7 @@ class MoviesWidget extends StatelessWidget {
                             style: TextStyle(color: Colors.grey),
                           ),
                           Spacer(),
-                          FavouriteBtn(),
+                          FavouriteBtn(moviesModel: moviesModel),
                         ],
                       ),
                     ],
