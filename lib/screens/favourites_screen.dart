@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/constants/my_app_icons.dart';
+import 'package:movie_app/widgets/movies/movies_widget.dart';
 
 class FavouritesScreen extends StatelessWidget {
   const FavouritesScreen({super.key});
@@ -21,9 +22,9 @@ class FavouritesScreen extends StatelessWidget {
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {
-          // return MoviesWidget();
+          return MoviesWidget();
 
-          return Text("Hello Word");
+          // return Text("Hello Word");
         },
       ),
     );

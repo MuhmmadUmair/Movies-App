@@ -1,13 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/constants/my_app_constants.dart';
 import 'package:movie_app/constants/my_app_icons.dart';
 import 'package:movie_app/models/movies_model.dart';
 import 'package:movie_app/widgets/movies/favourite_btn.dart';
 import 'package:movie_app/widgets/movies/geners_list_widget.dart';
 
 class MovieDetails extends StatelessWidget {
-  final MoviesModel moviesModel;
-  const MovieDetails({super.key, required this.moviesModel});
+  // final MoviesModel moviesModel;
+  const MovieDetails({
+    super.key,
+    // required this.moviesModel
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +21,16 @@ class MovieDetails extends StatelessWidget {
         child: SingleChildScrollView(
           child: Stack(
             children: [
-              Hero(
-                tag: moviesModel.id,
-                child: SizedBox(
-                  height: size.height * 0.65,
-                  width: double.infinity,
-                  child: CachedNetworkImage(
-                    // ignore: unnecessary_null_comparison
-                    imageUrl: moviesModel.posterPath != null
-                        ? 'https://image.tmdb.org/t/p/w500${moviesModel.posterPath}'
-                        : 'https://via.placeholder.com/500x750?text=No+Image',
-                    fit: BoxFit.cover,
-                  ),
+              SizedBox(
+                height: size.height * 0.65,
+                width: double.infinity,
+                child: CachedNetworkImage(
+                  // ignore: unnecessary_null_comparison
+                  imageUrl: MyAppConstants.movieImage,
+                  //  moviesModel.posterPath != null
+                  //     ? 'https://image.tmdb.org/t/p/w500${moviesModel.posterPath}'
+                  //     : 'https://via.placeholder.com/500x750?text=No+Image',
+                  fit: BoxFit.cover,
                 ),
               ),
               Column(
@@ -48,7 +50,8 @@ class MovieDetails extends StatelessWidget {
                               children: [
                                 SizedBox(height: 25),
                                 Text(
-                                  moviesModel.title,
+                                  // moviesModel.title,
+                                  "Gangster",
                                   maxLines: 2,
                                   style: TextStyle(
                                     fontSize: 28.0,
@@ -65,17 +68,20 @@ class MovieDetails extends StatelessWidget {
                                     ),
                                     SizedBox(width: 5),
                                     Text(
-                                      '${moviesModel.voteAverage.toStringAsFixed(1)}/10',
+                                      // '${moviesModel.voteAverage.toStringAsFixed(1)}/10',
+                                      "5.6/10",
                                     ),
                                     Spacer(),
-                                    Text(moviesModel.releaseDate),
+                                    Text('10/8/2025'),
                                   ],
                                 ),
                                 SizedBox(height: 10),
-                                GenersListWidget(moviesModel: moviesModel),
+                                GenersListWidget(
+                                  // moviesModel: moviesModel
+                                ),
                                 SizedBox(height: 15),
                                 Text(
-                                  moviesModel.overview,
+                                  "Movie Details" * 200,
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(fontSize: 18),
                                 ),
@@ -93,7 +99,9 @@ class MovieDetails extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: FavouriteBtn(moviesModel: moviesModel),
+                            child: FavouriteBtn(
+                              // moviesModel: moviesModel
+                            ),
                           ),
                         ),
                       ),

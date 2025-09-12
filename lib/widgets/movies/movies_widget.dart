@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/constants/my_app_constants.dart';
 import 'package:movie_app/constants/my_app_icons.dart';
 import 'package:movie_app/models/movies_model.dart';
 import 'package:movie_app/screens/movie_details.dart';
@@ -9,8 +10,11 @@ import 'package:movie_app/widgets/movies/favourite_btn.dart';
 import 'package:movie_app/widgets/movies/geners_list_widget.dart';
 
 class MoviesWidget extends StatelessWidget {
-  final MoviesModel moviesModel;
-  const MoviesWidget({super.key, required this.moviesModel});
+  // final MoviesModel moviesModel;
+  const MoviesWidget({
+    super.key,
+    //  required this.moviesModel
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,25 +26,21 @@ class MoviesWidget extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () {
-            getIt<NavigationService>().navigation(
-              MovieDetails(moviesModel: moviesModel),
-            );
+            getIt<NavigationService>().navigation(MovieDetails());
           },
           child: IntrinsicWidth(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Hero(
-                  tag: moviesModel.id,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: CachedImage(
-                      // ignore: unnecessary_null_comparison
-                      imgUrl: moviesModel.posterPath != null
-                          ? 'https://image.tmdb.org/t/p/w500${moviesModel.posterPath}'
-                          : 'https://via.placeholder.com/500x750?text=No+Image',
-                    ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: CachedImage(
+                    // ignore: unnecessary_null_comparison
+                    imgUrl: MyAppConstants.movieImage,
+                    //  moviesModel.posterPath != null
+                    //     ? 'https://image.tmdb.org/t/p/w500${moviesModel.posterPath}'
+                    //     : 'https://via.placeholder.com/500x750?text=No+Image',
                   ),
                 ),
                 SizedBox(width: 10),
@@ -49,7 +49,8 @@ class MoviesWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        moviesModel.title,
+                        "Gangster",
+                        // moviesModel.title,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -61,12 +62,15 @@ class MoviesWidget extends StatelessWidget {
                           Icon(MyAppIcons.star, color: Colors.amber, size: 20),
                           SizedBox(width: 5),
                           Text(
-                            '${moviesModel.voteAverage.toStringAsFixed(1)}/10',
+                            // '${moviesModel.voteAverage.toStringAsFixed(1)}/10',
+                            "5.6/10",
                           ),
                         ],
                       ),
                       SizedBox(height: 10),
-                      GenersListWidget(moviesModel: moviesModel),
+                      GenersListWidget(
+                        //moviesModel: moviesModel
+                      ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -77,11 +81,14 @@ class MoviesWidget extends StatelessWidget {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            moviesModel.releaseDate,
+                            // moviesModel.releaseDate,
+                            "10/8/2025",
                             style: TextStyle(color: Colors.grey),
                           ),
                           Spacer(),
-                          FavouriteBtn(moviesModel: moviesModel),
+                          FavouriteBtn(
+                            // moviesModel: moviesModel
+                          ),
                         ],
                       ),
                     ],
