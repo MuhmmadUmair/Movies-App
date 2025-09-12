@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:movie_app/constants/my_app_icons.dart';
+import 'package:movie_app/constants/my_theme_data.dart';
 import 'package:movie_app/screens/favourites_screen.dart';
 import 'package:movie_app/service/init_getit.dart';
 import 'package:movie_app/service/navigation_service.dart';
@@ -12,7 +15,7 @@ class MoviesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    log("Rebuild");
     return Scaffold(
       appBar: AppBar(
         title: const Text('Popular Movies'),
@@ -23,11 +26,19 @@ class MoviesScreen extends StatelessWidget {
             },
             icon: Icon(MyAppIcons.favouriteRounded, color: Colors.red),
           ),
-          IconButton(
-            onPressed: () {
-              themeProvider.toggleTheme();
+          Consumer(
+            builder: (context, ThemeProvider themeProvider, child) {
+              return IconButton(
+                onPressed: () {
+                  themeProvider.toggleTheme();
+                },
+                icon: Icon(
+                  themeProvider.themeData == MyThemeData.darkTheme
+                      ? MyAppIcons.light
+                      : MyAppIcons.dark,
+                ),
+              );
             },
-            icon: Icon(MyAppIcons.dark),
           ),
         ],
       ),

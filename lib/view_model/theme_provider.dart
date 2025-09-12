@@ -6,6 +6,16 @@ class ThemeProvider with ChangeNotifier {
   ThemeData _themeMode = MyThemeData.lightTheme;
   ThemeData get themeData => _themeMode;
   final String themeKey = "darktheme";
+  ThemeProvider() {
+    loadTheme();
+  }
+  Future<void> loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isDark = prefs.getBool(themeKey) ?? false;
+    _themeMode = isDark ? MyThemeData.darkTheme : MyThemeData.lightTheme;
+    notifyListeners();
+  }
+
   Future<void> toggleTheme() async {
     final prefs = await SharedPreferences.getInstance();
     _themeMode = _themeMode == MyThemeData.darkTheme
