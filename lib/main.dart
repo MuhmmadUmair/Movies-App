@@ -6,6 +6,8 @@ import 'package:movie_app/repository/movies_repo.dart';
 import 'package:movie_app/screens/movies_screen.dart';
 import 'package:movie_app/service/init_getit.dart';
 import 'package:movie_app/service/navigation_service.dart';
+import 'package:movie_app/view_model/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,11 +35,18 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: getIt<NavigationService>().navigatorKey,
-      title: 'Movies App',
-      theme: MyThemeData.lightTheme,
-      home: const MoviesScreen(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ThemeProvider())],
+      child: Consumer(
+        builder: (context, ThemeProvider themeProvider, child) {
+          return MaterialApp(
+            navigatorKey: getIt<NavigationService>().navigatorKey,
+            title: 'Movies App',
+            theme: themeProvider.themeData,
+            home: const MoviesScreen(),
+          );
+        },
+      ),
     );
   }
 }
