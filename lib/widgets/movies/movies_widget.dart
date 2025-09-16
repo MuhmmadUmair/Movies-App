@@ -8,16 +8,14 @@ import 'package:movie_app/service/navigation_service.dart';
 import 'package:movie_app/widgets/cached_image.dart';
 import 'package:movie_app/widgets/movies/favourite_btn.dart';
 import 'package:movie_app/widgets/movies/geners_list_widget.dart';
+import 'package:provider/provider.dart';
 
 class MoviesWidget extends StatelessWidget {
-  // final MoviesModel moviesModel;
-  const MoviesWidget({
-    super.key,
-    //  required this.moviesModel
-  });
+  const MoviesWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final movieModelProvider = Provider.of<MoviesModel>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
@@ -26,21 +24,28 @@ class MoviesWidget extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () {
-            getIt<NavigationService>().navigation(MovieDetails());
+            getIt<NavigationService>().navigation(
+              ChangeNotifierProvider.value(
+                value: movieModelProvider,
+                child: MovieDetails(),
+              ),
+            );
           },
           child: IntrinsicWidth(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: CachedImage(
-                    // ignore: unnecessary_null_comparison
-                    imgUrl: MyAppConstants.movieImage,
-                    //  moviesModel.posterPath != null
-                    //     ? 'https://image.tmdb.org/t/p/w500${moviesModel.posterPath}'
-                    //     : 'https://via.placeholder.com/500x750?text=No+Image',
+                Hero(
+                  tag: movieModelProvider.id,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: CachedImage(
+                      // ignore: unnecessary_null_comparison
+                      imgUrl: movieModelProvider.posterPath != null
+                          ? 'https://image.tmdb.org/t/p/w500${movieModelProvider.posterPath}'
+                          : 'https://via.placeholder.com/500x750?text=No+Image',
+                    ),
                   ),
                 ),
                 SizedBox(width: 10),
@@ -49,8 +54,7 @@ class MoviesWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Gangster",
-                        // moviesModel.title,
+                        movieModelProvider.title,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -62,15 +66,12 @@ class MoviesWidget extends StatelessWidget {
                           Icon(MyAppIcons.star, color: Colors.amber, size: 20),
                           SizedBox(width: 5),
                           Text(
-                            // '${moviesModel.voteAverage.toStringAsFixed(1)}/10',
-                            "5.6/10",
+                            '${movieModelProvider.voteAverage.toStringAsFixed(1)}/10',
                           ),
                         ],
                       ),
                       SizedBox(height: 10),
-                      GenersListWidget(
-                        //moviesModel: moviesModel
-                      ),
+                      GenersListWidget(moviesModel: movieModelProvider),
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -81,14 +82,11 @@ class MoviesWidget extends StatelessWidget {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            // moviesModel.releaseDate,
-                            "10/8/2025",
+                            movieModelProvider.releaseDate,
                             style: TextStyle(color: Colors.grey),
                           ),
                           Spacer(),
-                          FavouriteBtn(
-                            // moviesModel: moviesModel
-                          ),
+                          FavouriteBtn(moviesModel: movieModelProvider),
                         ],
                       ),
                     ],

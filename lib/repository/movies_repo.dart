@@ -12,7 +12,7 @@ class MoviesRepository {
   }
 
   // List<MovieGenres> cachedGenres = [];
-  Future<List<MovieGenres>> movieGenres() async {
+  Future<List<GenresList>> fetchGenres() async {
     // return cachedGenres = await _apiService.movieGenres();
     return await _apiService.movieGenres();
   }
