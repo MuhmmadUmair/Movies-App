@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:movie_app/constants/api_constants.dart';
 import 'package:movie_app/models/movie_genres.dart';
@@ -23,7 +22,7 @@ class ApiService {
     }
   }
 
-  Future<List<MovieGenres>> movieGenres() async {
+  Future<List<GenresList>> movieGenres() async {
     final url = Uri.parse(
       "${ApiConstants.baseUrl}/genre/movie/list?language=en",
     );
@@ -33,7 +32,7 @@ class ApiService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return List.from(
-        data['genres'].map((index) => MovieGenres.formJson(index)),
+        data['genres'].map((index) => GenresList.formJson(index)),
       );
     } else {
       throw Exception("Failed to load movies ${response.statusCode}");

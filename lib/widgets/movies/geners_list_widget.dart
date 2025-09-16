@@ -4,16 +4,13 @@ import 'package:movie_app/models/movies_model.dart';
 import 'package:movie_app/utils/genre_utils.dart';
 
 class GenersListWidget extends StatelessWidget {
-  const GenersListWidget({
-    super.key,
-    // required this.moviesModel
-  });
-  // final MoviesModel moviesModel;
+  const GenersListWidget({super.key, required this.moviesModel});
+  final MoviesModel moviesModel;
   @override
   Widget build(BuildContext context) {
-    List<MovieGenres> moviesGenre = GenreUtils.genresName(
-      [],
-      // moviesModel.genreIds
+    List<GenresList> moviesGenre = GenreUtils.genresName(
+      moviesModel.genreIds,
+      context,
     );
     return Wrap(
       children: List.generate(
