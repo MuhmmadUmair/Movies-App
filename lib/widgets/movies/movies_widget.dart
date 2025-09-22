@@ -1,98 +1,96 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/constants/my_app_constants.dart';
 import 'package:movie_app/constants/my_app_icons.dart';
-import 'package:movie_app/models/movies_model.dart';
 import 'package:movie_app/screens/movie_details.dart';
-import 'package:movie_app/service/init_getit.dart';
-import 'package:movie_app/service/navigation_service.dart';
-import 'package:movie_app/widgets/cached_image.dart';
 import 'package:movie_app/widgets/movies/favourite_btn.dart';
 import 'package:movie_app/widgets/movies/geners_list_widget.dart';
-import 'package:provider/provider.dart';
+import '../../service/init_getit.dart';
+import '../../service/navigation_service.dart';
+import '../cached_image.dart';
 
 class MoviesWidget extends StatelessWidget {
-  const MoviesWidget({super.key});
+  const MoviesWidget({
+    super.key,
+    // required this.movieModel
+  });
 
+  // final MovieModel movieModel;
   @override
   Widget build(BuildContext context) {
-    final movieModelProvider = Provider.of<MoviesModel>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.0),
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.0),
           onTap: () {
-            getIt<NavigationService>().navigation(
-              ChangeNotifierProvider.value(
-                value: movieModelProvider,
-                child: MovieDetails(),
-              ),
-            );
+            getIt<NavigationService>().navigation(const MovieDetailsScreen());
           },
-          child: IntrinsicWidth(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Hero(
-                  tag: movieModelProvider.id,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: CachedImage(
-                      // ignore: unnecessary_null_comparison
-                      imgUrl: movieModelProvider.posterPath != null
-                          ? 'https://image.tmdb.org/t/p/w500${movieModelProvider.posterPath}'
-                          : 'https://via.placeholder.com/500x750?text=No+Image',
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IntrinsicWidth(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: const CachedImage(
+                      imgUrl: MyAppConstants.movieImage,
+                      // "https://image.tmdb.org/t/p/w500/${movieModel.backdropPath}",
                     ),
                   ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        movieModelProvider.title,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'movieModel.originalTitle',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Icon(MyAppIcons.star, color: Colors.amber, size: 20),
-                          SizedBox(width: 5),
-                          Text(
-                            '${movieModelProvider.voteAverage.toStringAsFixed(1)}/10',
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      GenersListWidget(moviesModel: movieModelProvider),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Icon(
-                            MyAppIcons.watchLater,
-                            size: 20,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            movieModelProvider.releaseDate,
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Spacer(),
-                          FavouriteBtn(moviesModel: movieModelProvider),
-                        ],
-                      ),
-                    ],
+                        const SizedBox(height: 10),
+                        const Row(
+                          children: [
+                            Icon(Icons.star, color: Colors.amber, size: 20),
+                            SizedBox(width: 5),
+                            Text("0.8/10"),
+                            //"${movieModel.voteAverage.toStringAsFixed(1)}/10"),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        const GenresListWidget(
+                          // movieModel: movieModel,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              MyAppIcons.watchLater,
+                              size: 20,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(width: 5),
+                            const Text(
+                              'movieModel.releaseDate',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            const Spacer(),
+                            const FavouriteBtn(
+                              // movieModel: movieModel,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

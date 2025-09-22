@@ -1,86 +1,88 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/constants/my_app_icons.dart';
-import 'package:movie_app/models/movies_model.dart';
+import 'package:movie_app/constants/my_app_constants.dart';
 import 'package:movie_app/widgets/movies/favourite_btn.dart';
 import 'package:movie_app/widgets/movies/geners_list_widget.dart';
-import 'package:provider/provider.dart';
+import '../widgets/cached_image.dart';
 
-class MovieDetails extends StatelessWidget {
-  const MovieDetails({super.key});
+class MovieDetailsScreen extends StatelessWidget {
+  const MovieDetailsScreen({
+    super.key,
+    // required this.movieModel
+  });
 
+  // final MovieModel movieModel;
   @override
   Widget build(BuildContext context) {
-    final movieModelProvider = Provider.of<MoviesModel>(context);
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Hero(
-                tag: movieModelProvider.id,
-                child: SizedBox(
-                  height: size.height * 0.65,
-                  width: double.infinity,
-                  child: CachedNetworkImage(
-                    // ignore: unnecessary_null_comparison
-                    imageUrl: movieModelProvider.posterPath != null
-                        ? 'https://image.tmdb.org/t/p/w500${movieModelProvider.posterPath}'
-                        : 'https://via.placeholder.com/500x750?text=No+Image',
-                    fit: BoxFit.cover,
-                  ),
-                ),
+        child: Stack(
+          children: [
+            SizedBox(
+              height: size.height * 0.45,
+              width: double.infinity,
+              child: const CachedImage(
+                imgUrl: MyAppConstants.movieImage,
+                // "https://image.tmdb.org/t/p/w500/${movieModel.backdropPath}",
               ),
-              Column(
+            ),
+            SingleChildScrollView(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: size.height * 0.56),
+                  SizedBox(
+                    height: size.height * 0.4,
+                    // child: Container(color: Colors.red,),
+                  ),
                   Stack(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
+                        padding: const EdgeInsets.only(top: 25),
                         child: Material(
                           borderRadius: BorderRadius.circular(20),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(16.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 25),
                                 Text(
-                                  movieModelProvider.title,
+                                  'movieModel.title',
                                   maxLines: 2,
                                   style: TextStyle(
+                                    // color: Theme.of(context).textSelectionColor,
                                     fontSize: 28.0,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 SizedBox(height: 8),
+                                SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Icon(
-                                      MyAppIcons.star,
+                                      Icons.star,
                                       color: Colors.amber,
                                       size: 20,
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      '${movieModelProvider.voteAverage.toStringAsFixed(1)}/10',
-                                    ),
+                                    Text("8/10"),
+                                    //"${movieModel.voteAverage.toStringAsFixed(1)}/10"),
                                     Spacer(),
-                                    Text(movieModelProvider.releaseDate),
+                                    Text(
+                                      'movieModel.releaseDate',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
                                   ],
                                 ),
                                 SizedBox(height: 10),
-                                GenersListWidget(
-                                  moviesModel: movieModelProvider,
+                                GenresListWidget(
+                                  // movieModel: movieModel,
                                 ),
                                 SizedBox(height: 15),
                                 Text(
-                                  movieModelProvider.overview,
+                                  'movieModel.overview',
                                   textAlign: TextAlign.justify,
-                                  style: TextStyle(fontSize: 18),
+                                  style: TextStyle(fontSize: 18.0),
                                 ),
                               ],
                             ),
@@ -94,10 +96,10 @@ class MovieDetails extends StatelessWidget {
                             color: Theme.of(context).cardColor,
                             shape: BoxShape.circle,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(6.0),
                             child: FavouriteBtn(
-                              moviesModel: movieModelProvider,
+                              // movieModel: movieModel,
                             ),
                           ),
                         ),
@@ -106,8 +108,19 @@ class MovieDetails extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Positioned(
+              top: 5,
+              left: 5,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const BackButton(),
+              ),
+            ),
+          ],
         ),
       ),
     );
