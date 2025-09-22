@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/constants/my_app_constants.dart';
 import 'package:movie_app/constants/my_app_icons.dart';
 import 'package:movie_app/screens/movie_details.dart';
-import 'package:movie_app/widgets/movies/favourite_btn.dart';
-import 'package:movie_app/widgets/movies/geners_list_widget.dart';
 import '../../service/init_getit.dart';
 import '../../service/navigation_service.dart';
 import '../cached_image.dart';
+import 'favorite_btn.dart';
+import 'genres_list_widget.dart';
 
 class MoviesWidget extends StatelessWidget {
   const MoviesWidget({
@@ -81,7 +81,7 @@ class MoviesWidget extends StatelessWidget {
                               style: TextStyle(color: Colors.grey),
                             ),
                             const Spacer(),
-                            const FavouriteBtn(
+                            const FavoriteBtnWidget(
                               // movieModel: movieModel,
                             ),
                           ],

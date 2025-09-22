@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/constants/my_app_constants.dart';
-import 'package:movie_app/widgets/movies/favourite_btn.dart';
-import 'package:movie_app/widgets/movies/geners_list_widget.dart';
+import 'package:movie_app/widgets/movies/favorite_btn.dart';
+import '../models/movies_model.dart';
 import '../widgets/cached_image.dart';
+import '../widgets/movies/genres_list_widget.dart';
 
 class MovieDetailsScreen extends StatelessWidget {
   const MovieDetailsScreen({
@@ -98,7 +99,7 @@ class MovieDetailsScreen extends StatelessWidget {
                           ),
                           child: const Padding(
                             padding: EdgeInsets.all(6.0),
-                            child: FavouriteBtn(
+                            child: FavoriteBtnWidget(
                               // movieModel: movieModel,
                             ),
                           ),

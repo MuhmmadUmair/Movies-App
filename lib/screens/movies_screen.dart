@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/screens/favourites_screen.dart';
 
 import '../constants/my_app_icons.dart';
 import '../service/init_getit.dart';
 import '../service/navigation_service.dart';
 import '../widgets/movies/movies_widget.dart';
+import 'favorites_screen.dart';
 
 class MoviesScreen extends StatelessWidget {
   const MoviesScreen({super.key});

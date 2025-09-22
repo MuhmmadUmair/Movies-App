@@ -1,5 +1,4 @@
 import 'package:movie_app/models/movie_genres.dart';
-
 import '../repository/movies_repo.dart';
 import '../service/init_getit.dart';
 

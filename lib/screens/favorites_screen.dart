@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/constants/my_app_icons.dart';
+
+import '../constants/my_app_icons.dart';
+import '../widgets/movies/movies_widget.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
@@ -12,16 +14,14 @@ class FavoritesScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(MyAppIcons.delete, color: Colors.red),
+            icon: const Icon(MyAppIcons.delete, color: Colors.red),
           ),
         ],
       ),
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {
-          // return MoviesWidget();
-
-          return Text("Hello Word");
+          return const MoviesWidget(); //const Text("data");
         },
       ),
     );
