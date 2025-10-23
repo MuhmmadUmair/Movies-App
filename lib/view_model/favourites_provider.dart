@@ -18,13 +18,13 @@ class FavouritesProvider with ChangeNotifier {
     return _favouritesList.any((movie) => movie.id == movieModel.id);
   }
 
-  void addOrRemoveFavourites(MoviesModel movieModel) {
+  void addOrRemoveFavourites(MoviesModel movieModel) async{
     if (isFavourite(movieModel)) {
       _favouritesList.removeWhere((movie) => movie.id == movieModel.id);
     } else {
       _favouritesList.add(movieModel);
     }
-    saveFavourite();
+   await saveFavourite();
     notifyListeners();
   }
 
