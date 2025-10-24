@@ -1,10 +1,10 @@
-class GenresList {
+class MovieGenres {
   final int id;
   final String name;
 
-  GenresList({required this.id, required this.name});
+  MovieGenres({required this.id, required this.name});
 
-  factory GenresList.formJson(Map<String, dynamic> json) {
-    return GenresList(id: json['id'], name: json['name']);
+  factory MovieGenres.formJson(Map<String, dynamic> json) {
+    return MovieGenres(id: json['id'], name: json['name']);
   }
 }

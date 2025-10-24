@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class MyAppIcons {
-  static const IconData favourite = Icons.favorite;
   static const IconData favouriteRounded = Icons.favorite_rounded;
   static const IconData favoriteOutline = Icons.favorite_outline_rounded;
   static const IconData dark = Icons.dark_mode;

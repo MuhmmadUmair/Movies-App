@@ -13,19 +13,24 @@ class MyErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(MyAppIcons.error, size: 50, color: Colors.red),
-            SizedBox(height: 10),
-            Text(errorText, style: TextStyle(color: Colors.red, fontSize: 16)),
-            SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: retryFunction,
-              child: Text("Retry", style: TextStyle(color: Colors.purple)),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(MyAppIcons.error, size: 50, color: Colors.red),
+              SizedBox(height: 10),
+              Text(
+                errorText,
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
+              SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: retryFunction,
+                child: Text("Retry", style: TextStyle(color: Colors.purple)),
+              ),
+            ],
+          ),
         ),
       ),
     );
