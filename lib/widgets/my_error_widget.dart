@@ -8,30 +8,28 @@ class MyErrorWidget extends StatelessWidget {
     required this.retryFunction,
   });
   final String errorText;
-  final VoidCallback retryFunction;
+  final Function retryFunction;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(MyAppIcons.error, size: 50, color: Colors.red),
-              SizedBox(height: 10),
-              Text(
-                errorText,
-                style: TextStyle(color: Colors.red, fontSize: 16),
-              ),
-              SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: retryFunction,
-                child: Text("Retry", style: TextStyle(color: Colors.purple)),
-              ),
-            ],
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(MyAppIcons.error, size: 50, color: Colors.red),
+          const SizedBox(height: 20),
+          Text(
+            'Error: $errorText',
+            style: const TextStyle(color: Colors.red, fontSize: 16),
           ),
-        ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              retryFunction();
+            },
+            child: const Text('Retry', style: TextStyle(color: Colors.white)),
+          ),
+        ],
       ),
     );
   }

@@ -28,22 +28,31 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  bloc: ^9.1.0
   cached_network_image: ^3.4.1
   cupertino_icons: ^1.0.8
   dotenv: ^4.2.0
+  equatable: ^2.0.7
   flutter:
     sdk: flutter
+  flutter_bloc: ^9.1.1
   flutter_dotenv: ^6.0.0
-  flutter_riverpod: ^2.5.1
+  flutter_launcher_icons: ^0.14.4
   get_it: ^8.2.0
   http: ^1.5.0
-  provider: ^6.1.5+1
   shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/images/logos.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

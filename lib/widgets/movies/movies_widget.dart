@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_app/constants/my_app_icons.dart';
 import 'package:movie_app/models/movies_model.dart';
 import 'package:movie_app/screens/movie_details.dart';
-import 'package:movie_app/widgets/movies/genres_list_widget.dart';
 import '../../service/init_getit.dart';
 import '../../service/navigation_service.dart';
 import '../cached_image.dart';
 import 'favorite_btn.dart';
+import 'genres_list_widget.dart';
 
-class MoviesWidget extends ConsumerWidget {
-  // final int index;
-  final MoviesModel movieModel;
-  const MoviesWidget({
-    super.key,
-    // required this.index,
-    required this.movieModel,
-  });
+class MoviesWidget extends StatelessWidget {
+  const MoviesWidget({super.key, required this.movieModel});
 
+  final MovieModel movieModel;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final movieModel = ref.watch(currentMovie(index));
-
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
@@ -30,7 +22,7 @@ class MoviesWidget extends ConsumerWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12.0),
           onTap: () {
-            getIt<NavigationService>().navigation(
+            getIt<NavigationService>().navigate(
               MovieDetailsScreen(movieModel: movieModel),
             );
           },
@@ -43,7 +35,7 @@ class MoviesWidget extends ConsumerWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12.0),
-                    child: CachedImage(
+                    child: CachedImageWidget(
                       imgUrl:
                           "https://image.tmdb.org/t/p/w500/${movieModel.backdropPath}",
                     ),
@@ -77,7 +69,7 @@ class MoviesWidget extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Icon(
-                              MyAppIcons.watchLater,
+                              MyAppIcons.watchLaterOutlined,
                               size: 20,
                               color: Theme.of(context).colorScheme.secondary,
                             ),
@@ -87,7 +79,7 @@ class MoviesWidget extends ConsumerWidget {
                               style: TextStyle(color: Colors.grey),
                             ),
                             const Spacer(),
-                            FavoriteBtnWidget(moviesModel: movieModel),
+                            FavoriteBtnWidget(movieModel: movieModel),
                           ],
                         ),
                       ],

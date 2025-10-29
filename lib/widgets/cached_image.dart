@@ -1,19 +1,19 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_app/constants/my_app_icons.dart';
 
-class CachedImage extends StatelessWidget {
-  final String imgUrl;
-  final double? imgHeight;
-  final double? imgWidth;
-  final BoxFit? boxFit;
-  const CachedImage({
+class CachedImageWidget extends StatelessWidget {
+  const CachedImageWidget({
     super.key,
     required this.imgUrl,
     this.imgHeight,
     this.imgWidth,
     this.boxFit,
   });
+  final String imgUrl;
+  final double? imgHeight;
+  final double? imgWidth;
+  final BoxFit? boxFit;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +21,10 @@ class CachedImage extends StatelessWidget {
     return CachedNetworkImage(
       height: imgHeight ?? size.width * 0.3,
       width: imgWidth ?? size.width * 0.2,
-      imageUrl: imgUrl,
+      imageUrl: imgUrl, //?? ,
       fit: boxFit ?? BoxFit.cover,
-      errorWidget: (context, url, error) => Icon(MyAppIcons.error),
+      errorWidget: (context, url, error) =>
+          const Icon(MyAppIcons.error, color: Colors.red),
     );
   }
 }

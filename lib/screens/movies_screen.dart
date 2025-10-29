@@ -1,67 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_app/Enums/theme_enum.dart';
-import 'package:movie_app/view_models/movies/movies_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/view_models/movies/movies_bloc.dart';
+import 'package:movie_app/view_models/theme/theme_bloc.dart';
+
 import '../constants/my_app_icons.dart';
 import '../service/init_getit.dart';
 import '../service/navigation_service.dart';
-import '../view_models/theme_provider.dart';
 import '../widgets/movies/movies_widget.dart';
 import 'favorites_screen.dart';
 
-class MoviesScreen extends ConsumerWidget {
+class MoviesScreen extends StatelessWidget {
   const MoviesScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final themeState = ref.watch(themeProvider);
-    final movieState = ref.watch(movieProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Popular Movies"),
         actions: [
           IconButton(
             onPressed: () {
-              getIt<NavigationService>().navigation(const FavoritesScreen());
+              // getIt<NavigationService>().showSnackbar();
+              // getIt<NavigationService>().showDialog(MoviesWidget());
+              getIt<NavigationService>().navigate(const FavoritesScreen());
             },
-            icon: const Icon(MyAppIcons.favouriteRounded, color: Colors.red),
+            icon: const Icon(MyAppIcons.favoriteRounded, color: Colors.red),
           ),
-          IconButton(
-            onPressed: () async {
-              await ref.read(themeProvider.notifier).toggleTheme();
+          BlocBuilder<ThemeBloc, ThemeState>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () async {
+                  getIt<ThemeBloc>().add(ToggleThemeEvent());
+                },
+                icon: Icon(
+                  state is DarkThemeState
+                      ? MyAppIcons.darkMode
+                      : MyAppIcons.lightMode,
+                ),
+              );
             },
-            icon: Icon(
-              themeState == ThemeEnum.dark ? MyAppIcons.dark : MyAppIcons.light,
-            ),
           ),
         ],
       ),
-      body: Builder(
-        builder: (context) {
-          if (movieState.isLoading && movieState.moviesList.isEmpty) {
-            return const Center(child: CircularProgressIndicator.adaptive());
-          } else if (movieState.fetchMoviesError.isNotEmpty) {
-            return Center(child: Text(movieState.fetchMoviesError));
-          }
+      body: BlocBuilder<MoviesBloc, MoviesState>(
+        builder: (context, state) {
+          if (state is MoviesLoadingState) {
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Loading..."),
+                  SizedBox(height: 20),
+                  CircularProgressIndicator.adaptive(),
+                ],
+              ),
+            );
+          } else if (state is MoviesErrorState) {
+            return Center(child: Text(state.message));
+          } else if (state is MoivesLoadedState ||
+              state is MoivesLoadedMoreState) {
+            final movies = state is MoivesLoadedState
+                ? state.movies
+                : (state as MoivesLoadedMoreState).movies;
+            bool isLoadingMore = state is MoivesLoadedMoreState;
+            int itemCount = isLoadingMore ? movies.length + 1 : movies.length;
 
-          return NotificationListener<ScrollNotification>(
-            onNotification: (ScrollNotification scrollInfo) {
-              if (scrollInfo.metrics.pixels ==
-                      scrollInfo.metrics.maxScrollExtent &&
-                  !movieState.isLoading &&
-                  movieState.fetchMoviesError.isEmpty) {
-                ref.read(movieProvider.notifier).getMovies();
-              }
-              return false;
-            },
-            child: ListView.builder(
-              itemCount: movieState.moviesList.length,
-              itemBuilder: (context, index) {
-                return MoviesWidget(movieModel: movieState.moviesList[index]);
+            return NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if (scrollInfo.metrics.pixels ==
+                        scrollInfo.metrics.maxScrollExtent &&
+                    !isLoadingMore) {
+                  getIt<MoviesBloc>().add(FetchMoreMoviesEvent());
+                  return true;
+                }
+                return false;
               },
-            ),
-          );
+              child: ListView.builder(
+                itemCount: itemCount,
+                itemBuilder: (context, index) {
+                  if (index >= movies.length && isLoadingMore) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+                  return MoviesWidget(movieModel: movies[index]);
+                },
+              ),
+            );
+          }
+          return Center(child: Text('No data available'));
         },
       ),
     );
