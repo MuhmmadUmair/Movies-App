@@ -169,5 +169,3 @@ flutter run
 
 If you liked this project or want to collaborate, let’s connect on **LinkedIn** 👇
 🔗 [Muhammad Umair – LinkedIn](https://www.linkedin.com/in/muhmmadumair3233)
-
-Would you like me to **add actual image links** (using placeholders or example GitHub asset links) so it’s ready for upload on your repository?
