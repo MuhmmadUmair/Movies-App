@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_app/models/movies_model.dart';
 import 'package:movie_app/widgets/movies/favorite_btn.dart';
-import 'package:movie_app/widgets/movies/genres_list_widget.dart';
 import '../widgets/cached_image.dart';
+import '../widgets/movies/genres_list_widget.dart';
 
-class MovieDetailsScreen extends ConsumerWidget {
-  final MoviesModel movieModel;
-  // final int index;
-  const MovieDetailsScreen({
-    // required this.index,
-    super.key,
-    required this.movieModel,
-  });
+class MovieDetailsScreen extends StatelessWidget {
+  const MovieDetailsScreen({super.key, required this.movieModel});
 
+  final MovieModel movieModel;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final movieModel = ref.watch(currentMovie(index));
+  Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       body: SafeArea(
@@ -25,7 +18,7 @@ class MovieDetailsScreen extends ConsumerWidget {
             SizedBox(
               height: size.height * 0.45,
               width: double.infinity,
-              child: CachedImage(
+              child: CachedImageWidget(
                 imgUrl:
                     "https://image.tmdb.org/t/p/w500/${movieModel.backdropPath}",
               ),
@@ -101,7 +94,7 @@ class MovieDetailsScreen extends ConsumerWidget {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: FavoriteBtnWidget(moviesModel: movieModel),
+                            child: FavoriteBtnWidget(movieModel: movieModel),
                           ),
                         ),
                       ),

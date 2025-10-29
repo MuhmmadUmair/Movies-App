@@ -1,24 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_app/models/movie_genres.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/models/movies_genre.dart';
 import 'package:movie_app/models/movies_model.dart';
+import 'package:movie_app/view_models/movies/movies_bloc.dart';
+
 import '../../utils/genre_utils.dart';
 
-class GenresListWidget extends ConsumerWidget {
+class GenresListWidget extends StatelessWidget {
   const GenresListWidget({super.key, required this.movieModel});
-  final MoviesModel movieModel;
+  final MovieModel movieModel;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    List<MovieGenres> moviesGenre = GenreUtils.movieGenresNames(
-      movieModel.genreIds,
-      ref,
-    );
-    return Wrap(
-      children: List.generate(
-        moviesGenre.length,
-        (index) =>
-            chipWidget(genreName: moviesGenre[index].name, context: context),
-      ),
+  Widget build(BuildContext context) {
+    return BlocBuilder<MoviesBloc, MoviesState>(
+      builder: (context, state) {
+        if (state is MoivesLoadedState || state is MoivesLoadedMoreState) {
+          List<MoviesGenre> moviesGenre = GenreUtils.movieGenresNames(
+            movieModel.genreIds,
+            state is MoivesLoadedState
+                ? state.genres
+                : (state as MoivesLoadedMoreState).genres,
+          );
+          return Wrap(
+            children: List.generate(
+              moviesGenre.length,
+              (index) => chipWidget(
+                genreName: moviesGenre[index].name,
+                context: context,
+              ),
+            ),
+          );
+        }
+        return Text('Loading genres...');
+      },
     );
   }
 

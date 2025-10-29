@@ -1,34 +1,48 @@
-import 'package:movie_app/models/movie_genres.dart';
-import 'package:movie_app/models/movies_model.dart';
+part of 'movies_bloc.dart';
 
-class MoviesState {
+sealed class MoviesState extends Equatable {
+  const MoviesState();
+
+  @override
+  List<Object> get props => [];
+}
+
+final class MoviesInitial extends MoviesState {}
+
+final class MoviesErrorState extends MoviesState {
+  final String message;
+
+  const MoviesErrorState({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+final class MoviesLoadingState extends MoviesState {}
+
+final class MoivesLoadedState extends MoviesState {
+  final List<MovieModel> movies;
+  final List<MoviesGenre> genres;
   final int currentPage;
-  final List<MoviesModel> moviesList;
-  final List<MovieGenres> movieGenres;
-  final bool isLoading;
-  final String fetchMoviesError;
 
-  MoviesState({
-    this.moviesList = const [],
-    this.movieGenres = const [],
-    this.isLoading = false,
-    this.fetchMoviesError = '',
-    this.currentPage = 1,
+  const MoivesLoadedState({
+    this.movies = const [],
+    this.genres = const [],
+    this.currentPage = 0,
   });
+  @override
+  List<Object> get props => [movies, genres, currentPage];
+}
 
-  MoviesState copyWith({
-    int? currentPage,
-    List<MoviesModel>? moviesList,
-    List<MovieGenres>? movieGenres,
-    bool? isLoading,
-    String? fetchMoviesError,
-  }) {
-    return MoviesState(
-      currentPage: currentPage ?? this.currentPage,
-      fetchMoviesError: fetchMoviesError ?? this.fetchMoviesError,
-      isLoading: isLoading ?? this.isLoading,
-      movieGenres: movieGenres ?? this.movieGenres,
-      moviesList: moviesList ?? this.moviesList,
-    );
-  }
+final class MoivesLoadedMoreState extends MoviesState {
+  final List<MovieModel> movies;
+  final List<MoviesGenre> genres;
+  final int currentPage;
+
+  const MoivesLoadedMoreState({
+    this.movies = const [],
+    this.genres = const [],
+    this.currentPage = 0,
+  });
+  @override
+  List<Object> get props => [movies, genres, currentPage];
 }
